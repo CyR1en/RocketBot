@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+}
+
+group 'com.rocket'
+version '1.0'
+mainClassName = 'com.rocket.rocketbot.RocketBot'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven{
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+}
+
+dependencies {
+    compile group: 'net.dv8tion', name: 'JDA', version: '3.6.0_376'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
+
+    compileOnly group: 'net.md-5', name: 'bungeecord-api', version: '1.12-SNAPSHOT'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    baseName = project.name
+    manifest {
+        attributes 'Implementation-Version': version
+        attributes 'Main-Class': mainClassName
+    }
+}
+
+shadowJar {
+    classifier = "shaded"
+}
+
+build {
+    dependsOn shadowJar
+}
+
